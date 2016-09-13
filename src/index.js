@@ -19,6 +19,7 @@ import series from './views/Series'
 import specify from './views/Specify'
 import gallery from './views/Specify/gallery'
 import config from './views/Specify/conf'
+import search from './views/Search'
 const history = useRouterHistory(createHistory)({ basename: '' });
 const store = configureStore();
 
@@ -39,13 +40,14 @@ ReactDOM.render(
             <Route path="/home" component={home}/>
             <Route path="/buy" component={buy}/>
             <Route path="/item/:CarNo" component={item}/>
-            <Route path="/view/:CarNo" component={view}/>
+            <Route path="/view(/:CarNo/)*" component={view}/>
             <Route path="/auto" component={buy_new}/>
             <Route path="/brand" component={brand}/>
             <Route path="/series(/:SeriesNo)" component={series}/>
             <Route path="/specify(/:CarNo)" component={specify}/>
-            <Route path="/gallery(/:CarNo)(/?gid?pid)" component={gallery}/>
+            <Route path="/gallery(/:CarNo/)*" component={gallery}/>
             <Route path="/config(/:CarNo)" component={config}/>
+            <Route path="/search" component={search}/>
           </Route>
         </Route>
       </Router>

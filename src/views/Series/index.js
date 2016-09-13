@@ -183,9 +183,12 @@ let Item=React.createClass({
                                 <p>
                                     颜&nbsp;&nbsp; 色：{this.state.detail.ColorIDs_Out&&this.state.detail.ColorIDs_Out.split(',').map((color)=>{
                                     if(color){
-                                        return (<span className={"color-icon color-"+color} key={color}>&nbsp;</span>)
+                                        return (<span className={"color-icon color-"+color} key={Math.random()}>&nbsp;</span>)
                                     }
                                 })}
+                                </p>
+                                <p>
+                                    数&nbsp;&nbsp; 量：{this.state.detail.KucunTotal}
                                 </p>
                             </List.Item>
 
@@ -200,7 +203,7 @@ let Item=React.createClass({
                             {
                                 this.state.items.map((item)=>{
                                     return (
-                                        <div className="t-series-list" key={item.CarNo}>
+                                        <div className="t-series-list" key={Math.random()}>
                                             <Link to={"/specify/"+item.CarNo+"/"} >
                                                 <List.Item
                                                     arrow="horizontal"
@@ -250,7 +253,7 @@ let Item=React.createClass({
                                                 agio=<i className="status-icon agio">&nbsp;</i>
                                             }
                                             return (
-                                                   <div>
+                                                   <div key={Math.random()}>
                                                        <div className="buy-list" onClick={this.handleClick}>
                                                            <h3 className="title">{rowData.SeriesName}{hot}{agio}</h3>
                                                            <Link key={rowData.SeriesNO} to={"/series/"+rowData.SeriesNO+"/"} >

@@ -47,7 +47,7 @@ let Home=React.createClass({
         }.bind(this));
     },
     handleSearch(){
-        console.log(1)
+        this.context.router.replace("/search");
     },
     handleCityChange(record){
         if(record.CityID||record.ID){

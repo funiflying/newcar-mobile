@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Link} from 'react-router'
-import { NavBar,Icon,SearchBar,Button,WingBlank,WhiteSpace,Flex,Popup,Drawer,List,Toast,ActivityIndicator,RefreshControl,ListView,Radio,Slider,Checkbox,Popover} from 'antd-mobile';
+import { NavBar,Icon,SearchBar,Button,WingBlank,WhiteSpace,Flex,Popup,Drawer,List,Toast,ActivityIndicator,RefreshControl,ListView,Radio,Slider,Checkbox,Popover,Pagination} from 'antd-mobile';
 import BackTop from 'antd/lib/back-top'
 import classNames from 'classnames'
 import  {getCarList} from '../../actions/buy-new'
@@ -32,8 +32,10 @@ let Buy=React.createClass({
         const dataSource = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2
         });
+        this.data=[];
         return {
             dataSource: dataSource.cloneWithRows([]),
+            data:[],
             loading: false,
             pageTotal:0,
             refresh:"加载更多",
@@ -63,16 +65,15 @@ let Buy=React.createClass({
         };
     },
     componentDidMount(){
-        this.props.getCarList(PARAMS);
+        this.props.getCarList({
+            PageNo:1
+        });
     },
     componentWillReceiveProps(nextProps){
         if(nextProps.items&&nextProps.items!=this.props.items){
-            ALL=ALL.concat(nextProps.items.data);
-            if(ALL.length==0){
-                ALL.push({empty:true});
-            }
+            this.data=this.data.concat(nextProps.items.data);
             this.setState({
-                dataSource:this.state.dataSource.cloneWithRows(ALL),
+                dataSource:this.state.dataSource.cloneWithRows(this.data),
                 pageTotal:Math.ceil(nextProps.items.count/NUM_SECTIONS),
                 refresh:Math.ceil(nextProps.items.count/NUM_SECTIONS)>1?"加载更多":"加载完毕"
             });
@@ -82,20 +83,15 @@ let Buy=React.createClass({
         });
     },
     onEndReached(event) {
-        pageIndex++;
         if(pageIndex<this.state.pageTotal){
+            pageIndex++;
             this.setState({loading:true});
             PARAMS.PageNo=pageIndex;
             setTimeout(()=>{
                 this.props.getCarList(PARAMS);
             },1500)
 
-        }else if(pageIndex==this.state.pageTotal){
-            this.setState({loading:true});
-            PARAMS.PageNo=pageIndex;
-            setTimeout(()=>{
-                this.props.getCarList(PARAMS);
-            },1500);
+        }else{
             this.setState({
                 refresh:"已全部加载"
             })
@@ -228,6 +224,7 @@ let Buy=React.createClass({
         }
     },
     handleSortChange(v,t){
+        this.data=[];
         this.setState({
             sort:v,
             sort_text:t
@@ -235,14 +232,17 @@ let Buy=React.createClass({
         Popup.hide();
         PARAMS.SortType=v;
         PARAMS.PageNo=1;
+        pageIndex=1;
         this.props.getCarList(PARAMS)
     },
     handlePriceChange(pid,pname){
+        this.data=[];
         Popup.hide();
         this.setState({
             price:pid,
             price_name:pname
         });
+        pageIndex=1;
         PARAMS.PageNo=1;
         pageIndex=1;
         ALL=[];
@@ -250,6 +250,7 @@ let Buy=React.createClass({
         this.props.getCarList(PARAMS)
     },
     handlePriceFreeChange(){
+        this.data=[];
         Popup.hide();
         PARAMS.Price_Statr=this.state.price_start;
         PARAMS.Price_End=this.state.price_end;
@@ -282,6 +283,7 @@ let Buy=React.createClass({
         })
     },
     handleColorChange(cid,cname){
+
         this.setState({
             color:cid,
             color_name:cname
@@ -357,9 +359,9 @@ let Buy=React.createClass({
         })
     },
     handleFilterSubmit(){
+        this.data=[];
         pageIndex=1;
         PARAMS.PageNo=1;
-        ALL=[];
         Object.keys(this.state).map((key)=>{
             let value=this.state[key];
             if(value){
@@ -400,7 +402,7 @@ let Buy=React.createClass({
     handleFilterRemove(fid){
         PARAMS.PageNo=1;
         pageIndex=1;
-        ALL=[];
+        this.data=[];
         switch (fid){
             case "price_name":
                 PARAMS.PriceID=null;
@@ -520,7 +522,7 @@ let Buy=React.createClass({
             onOpenChange: this.handleOther,
             dragHandleStyle:{"display":"none"},
             dragToggleDistance:50,
-            touch:false,
+            touch:false
         };
         const sidebar=(<div className="FILTER-OTHER">
             <NavBar style={{"backgroundColor":"#f5f5f5"}} mode="light" iconName="cross" onLeftClick={this.handleCloseFilter}  rightContent={<span onClick={this.handleFilterReset}>重置</span>}>筛选</NavBar>
@@ -897,7 +899,8 @@ let Buy=React.createClass({
                             <ListView
                                 dataSource={this.state.dataSource}
                                 renderFooter={() =>  <div style={{ "display": "flex", textAlign: 'center',justifyContent:"center" }}>
-                                                {this.state.loading? <ActivityIndicator  text="加载中..."/> : <span onClick={this.onEndReached}>{this.state.refresh}</span>}
+                                                {this.state.loading? <ActivityIndicator  text="加载中..."/> : <span onClick={this.onEndReached}>{this.state.refresh}
+                                           </span>}
                                             </div>}
                                 renderRow={row}
                                 pageSize={20}
