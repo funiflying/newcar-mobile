@@ -1,0 +1,45 @@
+.buy-list-sidebar {
+  padding: 8px 16px;
+  background-color: #ffffff;
+  border-top: 1px solid #f4f4f8;
+}
+.buy-list-sidebar > a {
+  color: #666;
+}
+.buy-list-sidebar:last-child {
+  border-bottom: 1px solid #f4f4f8;
+}
+.buy-list-sidebar .title {
+  padding: 2px;
+  font-size: 14px;
+  font-weight: normal;
+}
+.buy-list-sidebar .describe {
+  display: -webkit-flex;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-content: center;
+  align-items: flex-start;
+}
+.buy-list-sidebar .describe .pic {
+  flex: 1;
+  flex-shrink: 0.8;
+  flex-grow: 1.5;
+}
+.buy-list-sidebar .describe .pic img {
+  height: 75px;
+  width: 100px;
+}
+.buy-list-sidebar .describe .text {
+  flex: 2;
+  flex-shrink: 1.5;
+  padding-left: 15px;
+}
+.buy-list-sidebar .describe .text .price {
+  font-size: 20px;
+  color: #FF6E27;
+}
+.buy-list-sidebar .describe .text .save-price {
+  color: #ff2e0f;
+}

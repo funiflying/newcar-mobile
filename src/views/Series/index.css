@@ -1,0 +1,30 @@
+.t-series-list {
+  border-bottom: 1px solid #dedede;
+}
+.t-series-detail {
+  padding-top: 0.3rem;
+}
+.t-series-detail p {
+  line-height: .5rem;
+}
+.t-carousel {
+  position: relative;
+}
+.t-carousel .t-pic-dot {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 105;
+  left: 0;
+  padding: 0.1rem 0.1rem;
+  font-size: 0.25rem;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: -webkit-flex;
+  display: flex;
+  justify-content: space-between;
+}
+.t-carousel .slick-slide img {
+  width: 100%;
+  height: 100%;
+}

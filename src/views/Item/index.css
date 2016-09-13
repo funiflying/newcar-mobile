@@ -1,0 +1,69 @@
+.t-item {
+  padding-bottom: 50px;
+}
+.t-item .am-list {
+  padding-top: 0 ;
+}
+.t-item .t-shangpai {
+  height: auto;
+  padding: 8px;
+}
+.t-item .t-shangpai > img {
+  width: 100%;
+}
+.t-item .t-offer-group {
+  background: #ffffff;
+  padding: 8px;
+}
+.t-item .t-offer-group button {
+  margin: 5px;
+}
+.t-item-name h4 {
+  color: #4c4c4c;
+  padding: 15px auto;
+}
+.am-list .t-list-header {
+  padding-top: 14px ;
+  font-size: 14px !important;
+  color: #4c4c4c;
+  background: #ffffff;
+  display: inline-block;
+  width: 100%;
+}
+.t-item-readme {
+  background: #ffffff;
+  padding: 8px;
+}
+.t-item-btn {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  z-index: 50;
+}
+.t-item-btn .t-btn-group {
+  display: -webkit-flex;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-content: center;
+}
+.t-item-btn .t-btn-group .t-bt-l {
+  flex: 1;
+}
+.t-item-btn .t-btn-group .t-bt-l a {
+  display: block;
+  color: #4c4c4c;
+  border-top: 1px solid #dedede;
+}
+.t-item-btn .t-btn-group .t-bt-r {
+  flex: 2;
+  background: #2db7f5;
+  color: #ffffff;
+  font-size: 18px;
+  border-top: 1px solid #2db7f5;
+}

@@ -1,0 +1,154 @@
+.t-search {
+  padding-top: 43px;
+  background: url("t-search.png") no-repeat left top;
+  background-size: cover;
+}
+.t-search .locator {
+  text-align: center;
+  color: #ffffff;
+  font-size: 16px;
+  padding: 20px 0;
+}
+.t-search .am-search {
+  background: transparent;
+}
+.t-search .am-search-input {
+  height: 40px;
+}
+.t-search .am-search-input .am-search-clear {
+  height: 40px;
+}
+.t-linkBtn button {
+  background: #f96161;
+  color: #ffffff;
+  padding: 0 10px;
+}
+.t-linkBtn a {
+  color: #ffffff;
+}
+.second-hand {
+  /*  background: url("second-hand.png") no-repeat;*/
+  background-size: cover;
+  height: 169px;
+}
+.second-hand img {
+  width: 100%;
+}
+.new-car {
+  /*  background: url("new-car.png" ) no-repeat;*/
+  background-size: cover;
+  width: 100%;
+}
+.new-car img {
+  width: 100%;
+}
+.import-car {
+  /*  background: url("import-car.png") no-repeat;*/
+  background-size: cover;
+  width: 100%;
+}
+.import-car img {
+  width: 100%;
+}
+.t-access-h {
+  padding-left: 15px;
+  color: #333333;
+}
+.t-join {
+  background: url("t-join.png") no-repeat left center;
+  border-right: 1px solid #dedede;
+  text-align: right;
+  padding: 0 15px;
+}
+.t-assess {
+  background: url("t-assess.png") no-repeat left center;
+  text-align: right;
+  padding: 0 15px;
+}
+.am-drawer .am-drawer-sidebar {
+  background: #ffffff;
+}
+.new-car > a,
+.import-car > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+@media screen and (max-device-width: 320px) {
+  .second-hand {
+    height: 172px;
+  }
+  .new-car,
+  .import-car {
+    height: 82px;
+  }
+  .new-car > a,
+  .import-car > a {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .t-join {
+    background: url("t-join.png") no-repeat;
+    background-size: contain;
+    height: 50px;
+  }
+  .t-assess {
+    background: url("t-assess.png") no-repeat;
+    background-size: contain;
+    height: 50px;
+  }
+}
+@media all and (orientation: landscape) {
+  .second-hand {
+    height: 320px;
+  }
+  .new-car,
+  .import-car {
+    height: 140px;
+  }
+  .import-car {
+    margin-top: 20px;
+  }
+  .t-join {
+    background: url("t-join.png") no-repeat;
+    background-size: contain;
+    height: 50px;
+  }
+  .t-assess {
+    background: url("t-assess.png") no-repeat;
+    background-size: contain;
+    height: 50px;
+  }
+}
+@media screen and (min-device-width: 321px) {
+  .second-hand {
+    height: 200px;
+  }
+  .new-car {
+    height: 100px;
+  }
+  .import-car {
+    height: 100px;
+  }
+  .t-join {
+    background: url("t-join.png") no-repeat;
+    background-size: contain;
+    height: 80px;
+  }
+  .t-assess {
+    background: url("t-assess.png") no-repeat;
+    background-size: contain;
+    height: 80px;
+  }
+}
+@media screen and (max-device-width: 640px) {
+  .t-search {
+    height: 163px;
+  }
+}
+@media screen and (min-device-width: 641px) {
+  .t-search {
+    height: 223px;
+  }
+}

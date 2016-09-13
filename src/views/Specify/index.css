@@ -1,0 +1,100 @@
+.t-steps {
+  padding: .3rem;
+}
+.t-carousel {
+  position: relative;
+}
+.t-carousel .t-pic-dot {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 100;
+  left: 0;
+  padding: 0.1rem 0.1rem;
+  font-size: 0.25rem;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: -webkit-flex;
+  display: flex;
+  justify-content: space-between;
+}
+.t-carousel .slick-slide img {
+  width: 100%;
+  height: 100%;
+}
+.t-pic-list {
+  padding: 8px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.t-pic-list .t-pic-list-item {
+  width: 48%;
+  margin-right: 2%;
+  float: left;
+  margin-top: 2%;
+  display: flex;
+  align-items: flex-start;
+}
+.t-pic-list .t-pic-list-item > img {
+  width: 100%;
+  height: 100%;
+}
+.t-pic-list .list-view-section-body::after {
+  content: "";
+  display: block;
+  height: 0;
+  clear: both;
+}
+.t-pic-toolbar {
+  height: .8rem;
+  border-top: 1px solid #F5F5F9;
+  border-bottom: 1px solid #F5F5F9;
+  text-align: center;
+  color: #666;
+  top: 38px;
+  background: #ffffff;
+  z-index: 105;
+  position: fixed;
+  width: 100%;
+}
+.t-pic-navbar {
+  position: fixed;
+  width: 100%;
+}
+.t-index-list-search-bar {
+  position: relative;
+  text-align: left;
+}
+.t-catalog {
+  position: fixed;
+  z-index: 99;
+  bottom: 36px;
+  left: 10px;
+  width: 200px;
+  color: #fff;
+}
+.t-catalog .t-catalog-show {
+  display: block;
+  background: rgba(0, 0, 0, 0.5);
+  width: 50px;
+  height: 28px;
+  font-size: 14px;
+  line-height: 28px;
+  text-align: center;
+  border-radius: 5px;
+}
+.t-catalog-container {
+  padding-top: 40px;
+}
+.t-catalog-container .am-indexed-list-quick-search-bar li {
+  float: left;
+  width: 50%;
+  color: #fff;
+  margin: 5px 0;
+}
+.t-catalog-container .am-indexed-list-quick-search-bar li::after {
+  content: '';
+  display: block;
+  clear: both;
+}
