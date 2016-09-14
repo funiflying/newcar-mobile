@@ -13,6 +13,7 @@
   display: block;
   padding: 0 .18rem;
   background: #ffffff;
+  border-radius: .06rem;
 }
 .t-search-bar .search-bar {
   flex: 2;

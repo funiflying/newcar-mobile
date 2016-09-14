@@ -11,7 +11,9 @@ import  {ChineseDistricts} from '../../utils/constant'
 import './index.less'
 const RadioItem = Radio.RadioItem;
 const CheckboxItem = Checkbox.CheckboxItem;
-
+const contextTypes = {
+    router: PropTypes.object.isRequired
+};
 const StaticBrand=[
     {
         value:17,
@@ -84,17 +86,15 @@ let count = 1;
 let index =- 1;
 const NUM_SECTIONS = 20;
 let pageIndex = 1;
-let ALL=[];
 let PARAMS={
-    Sort:0,
     PageNo:1
 };
-
 let Buy=React.createClass({
     getInitialState() {
         const dataSource = new ListView.DataSource({
             rowHasChanged : (row1, row2) => row1 !== row2
         });
+        this.data=[];
         return {
             items: [],
             data:[],
@@ -103,6 +103,7 @@ let Buy=React.createClass({
             pageTotal:0,
             refresh:"点击加载更多",
             sort:0,
+            text:this.props.location.state&&this.props.location.state.text,
             pid:0,//价格
             ps:null,
             pe:null,
@@ -114,7 +115,7 @@ let Buy=React.createClass({
             hot:null,//热门
             country:null,//城市
             country_name:null,
-            brand:null,//品牌
+            brand:this.props.location.state&&this.props.location.state.label,//品牌
             sort_text:"默认排序",
             open: false,
             open2:false,
@@ -123,20 +124,22 @@ let Buy=React.createClass({
         };
     },
     componentDidMount(){
-        PARAMS={
-            Sort:0,
-            PageNo:1
-        };
-        this.props.getCarList(PARAMS);
+        PARAMS.BrandID=this.props.location.state&&this.props.location.state.value;
+        PARAMS.SearchText=this.props.location.state&&this.props.location.state.text;
+        this.props.getCarList({
+            PageNo:1,
+            BrandID:this.props.location.state&&this.props.location.state.value,
+            SearchText:this.props.location.state&&this.props.location.state.text
+        });
     },
     componentWillReceiveProps(nextProps){
         if(nextProps.items){
-            ALL=ALL.concat(nextProps.items.data);
-            if(ALL.length==0){
-                ALL.push({empty:true});
+            this.data=this.data.concat(nextProps.items.data);
+            if(this.data.length==0){
+                this.data=[{empty:true}];
             }
             this.setState({
-                dataSource:this.state.dataSource.cloneWithRows(ALL),
+                dataSource:this.state.dataSource.cloneWithRows(this.data),
                 pageTotal:Math.ceil(nextProps.items.count/NUM_SECTIONS),
                 refresh:Math.ceil(nextProps.items.count/NUM_SECTIONS)>1?"加载更多":"加载完毕"
             });
@@ -170,7 +173,7 @@ let Buy=React.createClass({
             setTimeout(() => {
                 this.props.getCarList()
                 if (true) {
-                   /* ALL=[];
+                   /* this.data=[];
                     pageIndex=1;*/
                     resolve();
                 } else {
@@ -342,7 +345,7 @@ let Buy=React.createClass({
 
         PARAMS.PageNo=1;
         pageIndex=1;
-        ALL=[];
+        this.data=[];
         this.props.getCarList(PARAMS)
     },
     handlePriceFreeChange(){
@@ -363,7 +366,7 @@ let Buy=React.createClass({
         }
         PARAMS.PageNo=1;
         pageIndex=1;
-        ALL=[];
+        this.data=[];
         this.props.getCarList(PARAMS)
     },
     handleBrand(){
@@ -389,7 +392,7 @@ let Buy=React.createClass({
         PARAMS.BrandID=bid;
         pageIndex=1;
         PARAMS.PageNo=1;
-        ALL=[];
+        this.data=[];
         this.props.getCarList(PARAMS);
         this.setState({
             open: !this.state.open,
@@ -469,7 +472,7 @@ let Buy=React.createClass({
         PARAMS.HotCar=null;
         pageIndex=1;
         PARAMS.PageNo=1;
-        ALL=[];
+        this.data=[];
         this.props.getCarList(PARAMS);
         this.setState({
             cid:null,
@@ -485,7 +488,7 @@ let Buy=React.createClass({
     handleFilterSubmit(){
         pageIndex=1;
         PARAMS.PageNo=1;
-        ALL=[];
+        this.data=[];
         this.props.getCarList(PARAMS);
         this.setState({
             list_height:"auto",
@@ -495,7 +498,7 @@ let Buy=React.createClass({
     handleFilterRemove(fid){
         PARAMS.PageNo=1;
         pageIndex=1;
-        ALL=[];
+        this.data=[];
         switch (fid){
             case "pid":
                  PARAMS.Price_Start=null;
@@ -544,6 +547,14 @@ let Buy=React.createClass({
                 this.setState({
                     brand:null
                 });
+                this.context.router.replace("/buy");
+                break;
+            case "text":
+                PARAMS.SearchText=null;
+                this.setState({
+                    text:null
+                });
+                this.context.router.replace("/buy");
                 break;
         }
         this.props.getCarList(PARAMS)
@@ -569,11 +580,13 @@ let Buy=React.createClass({
             country:null,//城市
             country_name:null,
             brand:null,//品牌
-            sort_text:"默认排序"
+            sort_text:"默认排序",
+            text:null
         });
         PARAMS.PageNo=1;
         pageIndex=1;
-        ALL=[];
+        this.data=[];
+        this.context.router.replace("/buy");
         this.props.getCarList(PARAMS);
     },
     loadingFunction(){
@@ -589,7 +602,7 @@ let Buy=React.createClass({
     },
     handleVisibleChange(visible) {
         this.setState({
-            visible,
+            visible
         });
     },
     render(){
@@ -869,7 +882,7 @@ let Buy=React.createClass({
         for(let key in this.state){
             if(this.state.hasOwnProperty(key)){
                 let value=this.state[key];
-                if((key=="brand"||key=="sname"||key=="cname"||key=="country_name")&&value){
+                if((key=="brand"||key=="sname"||key=="cname"||key=="country_name"||key=="text")&&value){
                     result.push(
                         <li key={key} onClick={this.handleFilterRemove.bind(null,key)}>{value}
                             <i className="icon-close" >&times;</i>
@@ -935,10 +948,12 @@ let Buy=React.createClass({
         </Popover>;
         return (
                 <div>
+
                     <div className="drawer-container">
                         <Drawer sidebar={sidebar}{...drawerProps} className="spe-drawer">
                             <Drawer sidebar={sidebar2}{...drawerProps2} className="spe-drawer">
-                                <div style={{height:window.screen.height}}>
+
+                                <div style={{minHeight:window.screen.height}}>
                                     <NavBar mode="light" iconName="left" leftContent={<a  style={{"color":"#4c4c4c"}} href="#home">首页</a>} rightContent={menu}>平行进口</NavBar>
                                     <div  className="t-list">
                                         <div className="separator"></div>
@@ -970,10 +985,11 @@ let Buy=React.createClass({
                                         useBodyScroll
                                         onEndReachedThreshold={10}
                                         onEndReached={this.onEndReached}
+                                        renderSeparator={separator}
                                         stickyProps={{
-                              // topOffset: -43,
-                               isActive: false // 关闭 sticky 效果
-                            }}
+                                          // topOffset: -43,
+                                           isActive: false // 关闭 sticky 效果
+                                        }}
 
                                     />
                                     <BackTop/>
@@ -987,6 +1003,7 @@ let Buy=React.createClass({
                 )
     }
 });
+Buy.contextTypes = contextTypes;
 function mapStateToProps(state) {
     return {
         items: state.buy.items,

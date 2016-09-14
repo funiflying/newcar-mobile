@@ -1,0 +1,25 @@
+.invest {
+  color: #333333;
+  background: #ffffff;
+  padding: 0.15rem;
+  line-height: 0.4;
+}
+.invest .header {
+  text-align: center;
+  border-bottom: 2px solid #cccccc;
+  line-height: 45px;
+  font-size: 0.28rem;
+}
+.invest .title {
+  font-size: 0.24rem;
+  margin: 20px 0;
+}
+.invest .invest-content {
+  color: #666666;
+  line-height: 30px;
+  text-indent: 2em;
+}
+.invest .invest-content ul li {
+  list-style-type: disc;
+  list-style-position: inside;
+}

@@ -20,6 +20,7 @@ import specify from './views/Specify'
 import gallery from './views/Specify/gallery'
 import config from './views/Specify/conf'
 import search from './views/Search'
+import join from './views/Join'
 const history = useRouterHistory(createHistory)({ basename: '' });
 const store = configureStore();
 
@@ -48,6 +49,7 @@ ReactDOM.render(
             <Route path="/gallery(/:CarNo/)*" component={gallery}/>
             <Route path="/config(/:CarNo)" component={config}/>
             <Route path="/search" component={search}/>
+            <Route path="/join" component={join}/>
           </Route>
         </Route>
       </Router>

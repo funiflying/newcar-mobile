@@ -23,7 +23,6 @@ let count = 1;
 let index =- 1;
 const NUM_SECTIONS = 20;
 let pageIndex = 1;
-let ALL=[];
 let PARAMS={
     PageNo:1
 };
@@ -40,6 +39,9 @@ let Buy=React.createClass({
             pageTotal:0,
             refresh:"加载更多",
             sort:0,
+            text:this.props.location.state&&this.props.location.state.text,
+            brand:null,
+            brand_name:this.props.location.state&&this.props.location.state.label,
             price:null,//价格,
             price_name:null,
             price_start:null,
@@ -65,18 +67,35 @@ let Buy=React.createClass({
         };
     },
     componentDidMount(){
+        console.log(this.props)
+        PARAMS.BrandID=this.props.location.state&&this.props.location.state.value;
+        PARAMS.SearchText=this.props.location.state&&this.props.location.state.text;
         this.props.getCarList({
-            PageNo:1
+            PageNo:1,
+            BrandID:this.props.location.state&&this.props.location.state.value,
+            SearchText:this.props.location.state&&this.props.location.state.text
         });
     },
     componentWillReceiveProps(nextProps){
         if(nextProps.items&&nextProps.items!=this.props.items){
             this.data=this.data.concat(nextProps.items.data);
-            this.setState({
-                dataSource:this.state.dataSource.cloneWithRows(this.data),
-                pageTotal:Math.ceil(nextProps.items.count/NUM_SECTIONS),
-                refresh:Math.ceil(nextProps.items.count/NUM_SECTIONS)>1?"加载更多":"加载完毕"
-            });
+            if(this.data.length==0){
+                this.data=[{
+                    empty:true
+                }];
+                this.setState({
+                    dataSource:this.state.dataSource.cloneWithRows(this.data),
+                    pageTotal:0,
+                    refresh:""
+                });
+            }else {
+                this.setState({
+                    dataSource:this.state.dataSource.cloneWithRows(this.data),
+                    pageTotal:Math.ceil(nextProps.items.count/NUM_SECTIONS),
+                    refresh:Math.ceil(nextProps.items.count/NUM_SECTIONS)>1?"加载更多":"加载完毕"
+                });
+            }
+
         }
         this.setState({
             loading:nextProps.loading
@@ -245,7 +264,6 @@ let Buy=React.createClass({
         pageIndex=1;
         PARAMS.PageNo=1;
         pageIndex=1;
-        ALL=[];
         PARAMS.PriceID=pid;
         this.props.getCarList(PARAMS)
     },
@@ -259,13 +277,11 @@ let Buy=React.createClass({
         }
         PARAMS.PageNo=1;
         pageIndex=1;
-        ALL=[];
         this.props.getCarList(PARAMS)
     },
     handleBrand(){
         this.context.router.replace("/brand");
     },
-
     handleOther(){
         var Sort=document.getElementsByClassName("FILTER-SORT");
         var Price=document.getElementsByClassName("FILTER-PRICE");
@@ -404,6 +420,17 @@ let Buy=React.createClass({
         pageIndex=1;
         this.data=[];
         switch (fid){
+            case "brand_name":
+            case "text":
+                PARAMS.BrandID=null;
+                PARAMS.SearchText=null;
+                this.setState({
+                    brand_name:null,
+                    brand:null,
+                    text:null
+                });
+                this.context.router.replace("/auto");
+                break;
             case "price_name":
                 PARAMS.PriceID=null;
                 this.setState({
@@ -467,15 +494,14 @@ let Buy=React.createClass({
                 break;
             case "price_end":
                 PARAMS.Price_Start=null;
-                PARAMS.Price_Statr=null
+                PARAMS.Price_Statr=null;
                 this.setState({
                     price_end:null,
                     price_start:null
                 });
                 break;
         }
-        this.props.getCarList(PARAMS)
-
+        this.props.getCarList(PARAMS);
     },
     handleFilterRemoveAll(){
         PARAMS={
@@ -485,6 +511,7 @@ let Buy=React.createClass({
         pageIndex=1;
         this.setState({
             sort:0,
+            text:null,
             price:null,//价格,
             price_name:null,
             price_start:null,
@@ -503,12 +530,17 @@ let Buy=React.createClass({
             gearbox_name:null,
             agio:null,
             hot:null,
-            sort_text:"默认排序"
+            sort_text:"默认排序",
+            brand_name:null,
+            brand:null
         });
+
         PARAMS.PageNo=1;
         pageIndex=1;
-        ALL=[];
+        this.data=[];
+        this.context.router.replace("/auto");
         this.props.getCarList(PARAMS);
+
     },
     handleVisibleChange(visible) {
         this.setState({
@@ -768,6 +800,8 @@ let Buy=React.createClass({
                     case "discs_name":
                     case "country_name":
                     case "gearbox_name":
+                    case "brand_name":
+                    case "text":
                         children.push (
                             <li onClick={this.handleFilterRemove.bind(null,key)} key={key}>{value}
                                 <i className="icon-close" >&times;</i>
@@ -822,7 +856,7 @@ let Buy=React.createClass({
             }
             return (
                 <div key={rowData.SeriesNO+`$$$`}>
-                    <div className="separator"></div>
+
                     <div className="buy-list" >
                         <Link to={"/series/"+rowData.SeriesNO+"/"}>
                             <h3 className="title">{rowData.SeriesName}{hot}{agio}</h3>
@@ -863,11 +897,14 @@ let Buy=React.createClass({
                 </div>
             );
         };
+        const separator = (sectionID, rowID) => (
+            <div key={`${sectionID}-${rowID}`} className="separator"></div>
+        );
         return (
             <div>
                 <div className="drawer-container">
                     <Drawer sidebar={sidebar}{...drawerProps} className="spe-drawer">
-                        <div>
+                        <div style={{"minHeight":window.screen.height}}>
                             <NavBar mode="light" iconName="left" leftContent={<Link to="/home">首页</Link>} rightContent={menu}>新车直销</NavBar>
                             <div  className="t-list">
                                 <div className="separator"></div>
@@ -909,6 +946,7 @@ let Buy=React.createClass({
                                 useBodyScroll
                                 onEndReachedThreshold={10}
                                 onEndReached={this.onEndReached}
+                                renderSeparator={separator}
                                 stickyProps={{
                               // topOffset: -43,
                                isActive: false // 关闭 sticky 效果

@@ -172,6 +172,7 @@ let Home=React.createClass({
                             <SearchBar
                                 placeholder="搜索"
                                 onFocus={this.handleSearch}
+                                autofocus={false}
                             />
                         </section>
                         <section className="t-linkBtn">
@@ -255,9 +256,9 @@ let Home=React.createClass({
                             <article>
                                 <Flex>
                                     <Flex.Item className="t-join">
-                                        <p style={{"color":"#20cfb2"}}>
+                                        <Link to="/join" style={{"color":"#20cfb2","display":"block"}}>
                                             诚邀
-                                        </p>
+                                        </Link>
                                         <p>
                                             各大车商入驻
                                         </p>

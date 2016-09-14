@@ -1,5 +1,6 @@
 import React from 'react'
 const API_URL={
+    JOIN:"/JoinMessage/JoinMessage/AddJoinMessage",//
     BUY_COUNT_WECHAT:"/Pureg/GetCountWX",
     TOKEN_WECHAT:"/Pureg/BrowPuregPage",
     ATOBUY:"/Pureg/PostPuregInfo",

@@ -2,9 +2,9 @@ import  React,{ PropTypes } from 'react'
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Link} from 'react-router'
-import { NavBar,Icon,Button,WingBlank,WhiteSpace,Flex,List,Toast,ActivityIndicator,Popover,SearchBar,Grid } from 'antd-mobile';
+import { NavBar,Icon,Button,WingBlank,WhiteSpace,Flex,List,Toast,ActivityIndicator,Popover,SearchBar,SwipeAction } from 'antd-mobile';
 import {data}  from '../../utils/brand-index';
-import {getItem,submitOrder} from '../../actions/item'
+import {Storage} from '../../utils/index'
 import './index.less'
 const defaultProps = {
     item: {},
@@ -23,9 +23,9 @@ let Item=React.createClass({
             open:false,
             visible:false,
             items:[],
-            key:1,
-            label:"二手",
-            placeholder:"品牌/车源号"
+            key:"3",
+            label:"新车",
+            search:Storage.getStorage("GUIISEARCH")
         };
     },
     componentDidMount(){
@@ -63,11 +63,6 @@ let Item=React.createClass({
                   });
                   break;
           }
-
-
-
-
-
       }else {
           this.setState({
               items:[]
@@ -83,10 +78,14 @@ let Item=React.createClass({
        });
         switch (event.key){
             case "1":
-                this.setState({
-                    items:[],
-                    placeholder:"品牌/车源号"
-                });
+            case "2":
+                window.location.href="http://wx.chetongxiang.com/index.html#/searchcar";
+                break;
+        }
+    },
+    handleSearchSubmit(value){
+        switch (this.state.key){
+            case "1":
                 break;
             case "2":
                 this.setState({
@@ -94,15 +93,86 @@ let Item=React.createClass({
                 });
                 break;
             case "3":
+                this.context.router.push({
+                    pathname: '/auto',
+                    state: {text:value}
+                });
+                break;
             case "4":
-                this.setState({
-                    placeholder:"品牌"
+                this.context.router.push({
+                    pathname: '/buy',
+                    state: {text:value}
                 });
                 break;
         }
+        let result=Storage.getStorage("GUIISEARCH")||{};
+        let text= result["text"]||[];
+        text.push(value);
+        result["text"]=text;
+        Storage.setStorage("GUIISEARCH",result);
     },
-    handleSearchSubmit(value){
-        alert(value)
+    handleClick(item){
+        switch (this.state.key){
+            case "1":
+                break;
+            case "2":
+                this.setState({
+                    placeholder:"店铺名称"
+                });
+                break;
+            case "3":
+                this.context.router.push({
+                    pathname: '/auto',
+                    state: {value:item.value,label:item.label}
+                });
+                break;
+            case "4":
+                this.context.router.push({
+                    pathname: '/buy',
+                    state: {value:item.value,label:item.label}
+                });
+                break;
+        }
+        let result=Storage.getStorage("GUIISEARCH")||{};
+        result[item.value]=item.label;
+        Storage.setStorage("GUIISEARCH",result);
+
+
+    },
+    handleClear(key){
+        let result = Storage.getStorage("GUIISEARCH");
+        if(!isNaN(key)){
+            delete result[key]
+        }else {
+            let text=[];
+            result["text"].map((txt)=>{
+                if(txt!=key){
+                    text.push(txt)
+                }
+            });
+            text.length>0?result["text"]=text:delete result["text"];
+        }
+       var keys=Object.keys(result);
+       if(keys.length>0){
+           Storage.setStorage("GUIISEARCH",result);
+           this.setState({
+               search:result
+           })
+       }else {
+           Storage.removeStorage("GUIISEARCH");
+           this.setState({
+               search:null
+           })
+       }
+
+
+
+    },
+    handleClearAll(){
+        Storage.removeStorage("GUIISEARCH");
+        this.setState({
+            search:null
+        })
     },
     render()
     {
@@ -170,7 +240,7 @@ let Item=React.createClass({
                             </Popover>
                         </div>
                         <div className="search-bar">
-                            <SearchBar placeholder={this.state.placeholder} onChange={this.handleSearch} onSubmit={this.handleSearchSubmit}/>
+                            <SearchBar placeholder="搜索" onChange={this.handleSearch} onSubmit={this.handleSearchSubmit}/>
                         </div>
                     </div>
                    {
@@ -178,13 +248,69 @@ let Item=React.createClass({
                            {
                                this.state.items.map((item)=>{
                                    return(<List.Item
-                                       thumb={"/car/"+item.value+".png"}
                                        key={item.value}
+                                       onClick={this.handleClick.bind(this,item)}
                                    >{item.label}</List.Item>)
                                })
                            }
                        </List>
                    }
+                {
+                    this.state.search&& <List title="搜索记录">
+                        {
+                            Object.keys(this.state.search).map((key)=>{
+                                if(key=="text"){
+                                   return this.state.search[key].map((txt)=>{
+                                       return( <SwipeAction
+                                           key={txt}
+                                           autoClose
+                                           right={[
+                                              {
+                                                text: '删除',
+                                                onPress: this.handleClear.bind(this,txt),
+                                                style: { backgroundColor: '#FE7A38', color: 'white' }
+                                              },
+                                              {
+                                                text: '取消',
+                                                style: { backgroundColor: '#ccc', color: 'white' }
+                                              }
+                                            ]}
+                                       >
+                                           <List.Item
+                                               key={txt}
+                                               onClick={this.handleSearchSubmit.bind(this,txt)}
+                                           >{txt}</List.Item>
+                                       </SwipeAction>);
+                                    })
+                                }else {
+                                  return( <SwipeAction
+                                        key={key}
+                                        autoClose
+                                        right={[
+                                              {
+                                                text: '删除',
+                                                onPress: this.handleClear.bind(this,key),
+                                                style: { backgroundColor: '#FE7A38', color: 'white' }
+                                              },
+                                              {
+                                                text: '取消',
+                                                style: { backgroundColor: '#ccc', color: 'white' }
+                                              }
+                                            ]}
+                                    >
+                                      <List.Item
+                                          key={key}
+                                          onClick={this.handleClick.bind(this,{label:this.state.search[key],value:key})}
+                                      >{this.state.search[key]}</List.Item>
+                                    </SwipeAction>);
+                                }
+
+                            })
+
+                        }
+                        <List.Item arrow="horizontal" onClick={this.handleClearAll}>清空搜索记录</List.Item>
+                    </List>
+                }
 
             </div>
         )
@@ -202,8 +328,7 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        getItem:bindActionCreators(getItem,dispatch),
-        submitOrder:bindActionCreators(submitOrder,dispatch)
+
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Item)
