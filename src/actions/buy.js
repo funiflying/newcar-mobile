@@ -8,7 +8,6 @@ export const CAR_LIST_SUCCESS="CAR_LIST_SUCCESS";
 
 
 export function getCarList(params){
-
     return {
         type: CAR_LIST,
         payload: {

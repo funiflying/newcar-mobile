@@ -313,12 +313,13 @@ let Buy=React.createClass({
         }
     },
     handleSortChange(v,t){
+        this.data=[];
         this.setState({
             sort:v,
             sort_text:t
         });
         Popup.hide();
-        PARAMS.Sort=v;
+        PARAMS.SortType=v;
         PARAMS.PageNo=1;
         this.props.getCarList(PARAMS)
     },
@@ -562,7 +563,7 @@ let Buy=React.createClass({
     },
     handleFilterRemoveAll(){
        PARAMS={
-           Sort:0,
+           SortType:0,
            PageNo:1
        };
         pageIndex=1;
@@ -790,12 +791,12 @@ let Buy=React.createClass({
                         现车
                     </a>
                 </li>
-                <li className={classNames({"active":this.state.sid==2})} onClick={this.handleStatusChange.bind(this,2,"已到港")}>
+                <li className={classNames({"active":this.state.sid==3})} onClick={this.handleStatusChange.bind(this,3,"已到港")}>
                     <a href="javascript:void(0)">
                         已到港
                     </a>
                 </li>
-                <li className={classNames({"active":this.state.sid==3})} onClick={this.handleStatusChange.bind(this,3,"报关中")}>
+                <li className={classNames({"active":this.state.sid==2})} onClick={this.handleStatusChange.bind(this,2,"报关中")}>
                     <a href="javascript:void(0)">
                         报关中
                     </a>

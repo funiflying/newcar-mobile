@@ -1,14 +1,14 @@
 import Api from './api';
 
 const api = new Api({
-  baseURI: 'http://192.168.0.218:8080',
+  baseURI: 'http://www.chetongxiang.com',
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   }
 });
 const api_import = new Api({
-  baseURI: 'http://192.168.0.198:100',
+  baseURI: '',
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'

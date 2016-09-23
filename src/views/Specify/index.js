@@ -64,13 +64,13 @@ let Item=React.createClass({
         if(nextProps.pic_list&&nextProps.pic_list!=this.props.pic_list){
             let pic_list=[];
             nextProps.pic_list.map((pic)=>{
-
               if(pic.Groups){
                   pic.Groups.map((row)=>{
                       pic_list= pic_list.concat(row.Rows)
                   })
               }
             });
+            pic_list.sort((a,b)=>a.SerialNO> b.SerialNO);
             this.setState({
                 pic_list:pic_list
             });
@@ -117,12 +117,12 @@ let Item=React.createClass({
         })
     },
     handleCityChange(e){
-        if(!e){
-            return false
+        if(e[1]){
+            this.setState({
+                city:e[1]
+            });
         }
-        this.setState({
-            city:e[1]||e[0]
-        });
+
     },
     handleSubmit(){
         let params=this.props.form.getFieldsValue();
@@ -170,7 +170,7 @@ let Item=React.createClass({
             <NavBar style={{"backgroundColor":"#f5f5f5"}} mode="light" iconName="left" leftContent="返回" onLeftClick={this.handleOrderSubmit} >{this.state.title}</NavBar>
             <List>
                 <List.Header className="t-list-header">
-                    <h3>{this.state.title}</h3>
+                    <h3>{this.state.item.BrandName+this.state.title}</h3>
                 </List.Header>
                 <List.Body>
                     <InputItem
@@ -241,7 +241,7 @@ let Item=React.createClass({
                         <NavBar mode="light" iconName="left" leftContent={<a href={this.state.item.SeriesNO&&"#/series/"+this.state.item.SeriesNO+"/"}>返回</a>} rightContent={menu}>{this.state.title}
                         </NavBar>
                         <div className="t-carousel">
-                            <Carousel dots={false} afterChange={this.handleAfterChange}>
+                            <Carousel dots={false} afterChange={this.handleAfterChange} selectedIndex={1} autoplay>
                                 {
                                     this.state.pic_list.map((pic)=>{
                                         return (<Link to={this.state.item.CarNo&&"/gallery/"+this.state.item.CarNo+"/"} key={pic.CarPicID}><img src={pic.PicAddr.substr(0,pic.PicAddr.lastIndexOf('.'))+"_Big"+pic.PicAddr.substr(pic.PicAddr.lastIndexOf('.'))} alt=""  /></Link>)

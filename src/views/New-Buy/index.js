@@ -67,7 +67,6 @@ let Buy=React.createClass({
         };
     },
     componentDidMount(){
-        console.log(this.props)
         PARAMS.BrandID=this.props.location.state&&this.props.location.state.value;
         PARAMS.SearchText=this.props.location.state&&this.props.location.state.text;
         this.props.getCarList({
@@ -102,13 +101,11 @@ let Buy=React.createClass({
         });
     },
     onEndReached(event) {
-        if(pageIndex<this.state.pageTotal){
-            pageIndex++;
+        pageIndex++;
+        if(pageIndex<=this.state.pageTotal){
             this.setState({loading:true});
             PARAMS.PageNo=pageIndex;
-            setTimeout(()=>{
-                this.props.getCarList(PARAMS);
-            },1500)
+            this.props.getCarList(PARAMS);
 
         }else{
             this.setState({
@@ -270,7 +267,7 @@ let Buy=React.createClass({
     handlePriceFreeChange(){
         this.data=[];
         Popup.hide();
-        PARAMS.Price_Statr=this.state.price_start;
+        PARAMS.Price_Start=this.state.price_start;
         PARAMS.Price_End=this.state.price_end;
         if(this.state.price_end==60){
             PARAMS.Price_End=null;
@@ -494,7 +491,7 @@ let Buy=React.createClass({
                 break;
             case "price_end":
                 PARAMS.Price_Start=null;
-                PARAMS.Price_Statr=null;
+                PARAMS.Price_End=null;
                 this.setState({
                     price_end:null,
                     price_start:null

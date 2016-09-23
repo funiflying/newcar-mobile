@@ -11,7 +11,8 @@ import buy_new from '../reducers/buy-new'
 import series from '../reducers/series'
 import specify from '../reducers/specify'
 import join from '../reducers/join'
-const reducer = combineReducers({atobuy,home,buy,item,buy_new,series,specify,join});
+import second from '../reducers/second'
+const reducer = combineReducers({atobuy,home,buy,item,buy_new,series,specify,join,second});
 const createStoreWithMiddleware = applyMiddleware(
   thunkMiddleware,
   promiseMiddleware({promiseTypeSuffixes: ['PENDING', 'SUCCESS', 'ERROR']})

@@ -44,9 +44,15 @@ let Item=React.createClass({
         if(nextProps.item&&nextProps.item!=this.props.item){
             this.setState({
                 item:nextProps.item,
-                title:nextProps.item.FullName,
+                title:nextProps.item.FullName
             });
-            let pic_list=[];
+            let pic_list=[{
+                src: nextProps.item.CoverImgURL.substr(0,nextProps.item.CoverImgURL.lastIndexOf('.'))+"_Big"+nextProps.item.CoverImgURL.substr(nextProps.item.CoverImgURL.lastIndexOf('.')),
+                thumbnail: nextProps.item.CoverImgURL,
+                title: nextProps.item.CoverImgURL,
+                w:window.screen.width,
+                h:(window.screen.width/1280)*854
+            }];
             nextProps.item.CarPics.map((pic)=>{
                 pic_list.push(
                     {

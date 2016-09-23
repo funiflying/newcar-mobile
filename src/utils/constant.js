@@ -1,9 +1,10 @@
 import React from 'react'
 const API_URL={
-    JOIN:"/JoinMessage/JoinMessage/AddJoinMessage",//
-    BUY_COUNT_WECHAT:"/Pureg/GetCountWX",
-    TOKEN_WECHAT:"/Pureg/BrowPuregPage",
-    ATOBUY:"/Pureg/PostPuregInfo",
+    SECOND_LIST:"/common/car/SearchCarForMobile",//二手列表
+    JOIN:"/JoinMessage/JoinMessage/AddJoinMessage",//加盟
+    BUY_COUNT_WECHAT:"/Pureg/GetCountWX",//
+    TOKEN_WECHAT:"/Pureg/BrowPuregPage",//
+    ATOBUY:"/Pureg/PostPuregInfo",//
     SIGN:"/Pureg/GetSignature",//微信签名
     CITY_LIST:"/direct/GetHomeProvinceList",//直营商城市列表
     CAR_COUNT:"/Pureg/GetValidCount",//帮买广场数量

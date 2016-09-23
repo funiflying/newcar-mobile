@@ -2,9 +2,9 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
-  devtool:'eval-source-map',
+  //devtool:'eval-source-map',
   entry: [
-    'webpack-hot-middleware/client',
+   //'webpack-hot-middleware/client',
     './src/index'
   ],
   output: {
@@ -23,14 +23,14 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({'process.env': {
-      NODE_ENV: '"development"'//development,production
+      NODE_ENV: '"production"'//development,production
     }
     }),
     new webpack.ContextReplacementPlugin(/\.\/locale$/, 'empty-module', false, /js$/)
 
   ],
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['', '.js', '.jsx']
   },
   module: {
     loaders: [

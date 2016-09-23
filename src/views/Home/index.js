@@ -256,12 +256,13 @@ let Home=React.createClass({
                             <article>
                                 <Flex>
                                     <Flex.Item className="t-join">
-                                        <Link to="/join" style={{"color":"#20cfb2","display":"block"}}>
+                                        <Link to="/join" style={{"color":"#20cfb2","display":"block","height":"100%"}}>
                                             诚邀
+                                            <p>
+                                                各大车商入驻
+                                            </p>
                                         </Link>
-                                        <p>
-                                            各大车商入驻
-                                        </p>
+
                                     </Flex.Item>
                                     <Flex.Item className="t-assess">
                                         <p style={{"color":"#669ce4"}}>
